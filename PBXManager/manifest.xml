@@ -1,0 +1,23 @@
+<?xml version='1.0'?>
+<module>
+	<type>extension</type>
+	<name>PBXManager</name>
+	<label>PBXManager</label>
+	<parent>Tools</parent>
+	<version>2.4</version>
+	<dependencies>
+		<vtiger_version>7.2.0</vtiger_version>
+		<vtiger_max_version>7.*</vtiger_max_version>
+	</dependencies>
+	<tables>
+	    <table>
+		<name>vtiger_pbxmanager</name>
+    		    <sql><![CDATA[ALTER TABLE vtiger_pbxmanager ADD COLUMN flag VARCHAR(15)]]></sql>
+	    </table>
+	    <table>
+		<name>vtiger_pbxmanager</name>
+		    <sql><![CDATA[ALTER TABLE vtiger_pbxmanager ADD COLUMN recordingurlfusion VARCHAR(255)]]></sql>
+	    </table>
+	</tables>
+
+</module>
