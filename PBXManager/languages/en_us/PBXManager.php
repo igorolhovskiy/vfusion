@@ -8,14 +8,14 @@
  * All Rights Reserved.
  *************************************************************************************/
 $languageStrings = array(
-	'Asterisk' => 'FusionPBX',
-	'Call From'=>'Call From',
-	'Call To'=>'Call To',
-	'LBL_CALL_INFORMATION' => 'Call Details',
-	'PBXManager ID'=>'PBX Manager ID',
-	'PBXManager' => 'PBX Manager',
-	'SINGLE_PBXManager' => 'PBX Manager',
-	'Time Of Call'=>'Time Of Call',
+    'Asterisk' => 'FusionPBX',
+    'Call From'=>'Call From',
+    'Call To'=>'Call To',
+    'LBL_CALL_INFORMATION' => 'Call Details',
+    'PBXManager ID'=>'PBX Manager ID',
+    'PBXManager' => 'PBX Manager',
+    'SINGLE_PBXManager' => 'PBX Manager',
+    'Time Of Call'=>'Time Of Call',
     //Blocks
     'LBL_PBXMANAGER_INFORMATION' => 'Call Details',
     'LBL_CUSTOM_INFORMATION'=>'Custom Information',
