@@ -31,5 +31,4 @@ class Settings_PBXManager_Index_View extends Settings_Vtiger_Index_View{
         $viewer->view('index.tpl', $request->getModule(false));
     }
 
-
 }

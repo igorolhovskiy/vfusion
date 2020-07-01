@@ -54,7 +54,7 @@ class PBXManager_ListView_Model extends Vtiger_ListView_Model {
     * Overrided to add HTML content for callstatus irrespective of the filters
     */
     
-   public function getListViewEntries($pagingModel) {
+    public function getListViewEntries($pagingModel) {
         $db = PearDatabase::getInstance();
 
         $moduleName = $this->getModule()->get('name');
@@ -71,17 +71,17 @@ class PBXManager_ListView_Model extends Vtiger_ListView_Model {
 
         $listViewContoller = $this->get('listview_controller');
 
-       // SalesPlatform.ru begin
-       $searchParams = $this->get('search_params');
-       if(empty($searchParams)) {
-           $searchParams = array();
-       }
-       $glue = "";
-       if(count($queryGenerator->getWhereFields()) > 0 && (count($searchParams)) > 0) {
-           $glue = QueryGenerator::$AND;
-       }
-       $queryGenerator->parseAdvFilterList($searchParams, $glue);
-       // SalesPlatform.ru end
+        // SalesPlatform.ru begin
+        $searchParams = $this->get('search_params');
+        if(empty($searchParams)) {
+            $searchParams = array();
+        }
+        $glue = "";
+        if(count($queryGenerator->getWhereFields()) > 0 && (count($searchParams)) > 0) {
+            $glue = QueryGenerator::$AND;
+        }
+        $queryGenerator->parseAdvFilterList($searchParams, $glue);
+        // SalesPlatform.ru end
 
         $searchKey = $this->get('search_key');
         $searchValue = $this->get('search_value');

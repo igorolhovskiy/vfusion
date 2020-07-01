@@ -18,7 +18,7 @@ class Settings_PBXManager_SaveAjax_Action extends Vtiger_SaveAjax_Action {
         
         $recordModel = Settings_PBXManager_Record_Model::getCleanInstance();
         $recordModel->set('gateway',$qualifiedModuleName);
-        if($id) {
+        if ($id) {
             $recordModel->set('id',$id);
         }
         
@@ -28,12 +28,14 @@ class Settings_PBXManager_SaveAjax_Action extends Vtiger_SaveAjax_Action {
         }
         
         $response = new Vtiger_Response();
+        
         try {
-                $recordModel->save();
-                $response->setResult(true);
+            $recordModel->save();
+            $response->setResult(true);
         } catch (Exception $e) {
-                $response->setError($e->getMessage());
+            $response->setError($e->getMessage());
         }
+
         $response->emit();
     }
 }

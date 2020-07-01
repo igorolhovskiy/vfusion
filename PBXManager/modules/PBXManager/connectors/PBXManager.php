@@ -739,18 +739,18 @@ class PBXManager_PBXManager_Connector {
             $curlhandlemp3  = fopen($curlfile, 'wb');
             fwrite($curlhandlemp3, $bodyContent );
             fclose($curlhandlemp3);
-        //if ($urlext=='wav') {
-        //	$curlfilewav = "voices/".temp."-".$sourceuuid.".wav";
-        //	$curlhandlewav  = fopen($curlfilewav, 'wb');
-        //	fwrite($curlhandlewav, $bodyContent );
-        //	fclose($curlhandlewav);
-        //	$resOutput = shell_exec("lame -h -b 32 --resample 8 -a $curlfilewav $curlfile");
-        //	unlink($curlfilewav);
-            //    } elseif ($urlext=='mp3') {
-        //	$curlhandlemp3  = fopen($curlfile, 'wb');
-        //	fwrite($curlhandlemp3, $bodyContent );
-        //	fclose($curlhandlemp3);
-        //    }	    
+            //if ($urlext=='wav') {
+            //	$curlfilewav = "voices/".temp."-".$sourceuuid.".wav";
+            //	$curlhandlewav  = fopen($curlfilewav, 'wb');
+            //	fwrite($curlhandlewav, $bodyContent );
+            //	fclose($curlhandlewav);
+            //	$resOutput = shell_exec("lame -h -b 32 --resample 8 -a $curlfilewav $curlfile");
+            //	unlink($curlfilewav);
+                //    } elseif ($urlext=='mp3') {
+            //	$curlhandlemp3  = fopen($curlfile, 'wb');
+            //	fwrite($curlhandlemp3, $bodyContent );
+            //	fclose($curlhandlemp3);
+            //    }	    
             return $curlfile;
         } else {
             return false;

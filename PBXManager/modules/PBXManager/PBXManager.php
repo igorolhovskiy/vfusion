@@ -69,7 +69,7 @@ class PBXManager extends CRMEntity {
     var $def_detailview_recname = 'customernumber';
     // Used when enabling/disabling the mandatory fields for the module.
     // Refers to vtiger_field.fieldname values.
-//    var $mandatory_fields = Array('assigned_user_id');
+    // var $mandatory_fields = Array('assigned_user_id');
     var $column_fields = Array();
     var $default_order_by = 'customernumber';
     var $default_sort_order = 'ASC';
@@ -113,16 +113,16 @@ class PBXManager extends CRMEntity {
         } else if ($event_type == 'module.preupdate') {
             // TODO Handle actions before this module is updated.
         } else if ($event_type == 'module.postupdate') {
-			$this->registerLookupEvents();
+            $this->registerLookupEvents();
             // TODO Handle actions before this module is updated.
         }
     }
     
     
     /** Function to handle module specific operations when saving a entity
-	*/
-	function save_module($module){
-	}
+    */
+    function save_module($module){
+    }
         
     /**
      * To add a phone extension field in user preferences page 
@@ -140,7 +140,7 @@ class PBXManager extends CRMEntity {
                 $fieldInstance->typeofdata = 'V~O';
                 $blockInstance->addField($fieldInstance);
             }
-        	$log->info('User Extension Field added');
+            $log->info('User Extension Field added');
         }
     }
     
@@ -156,7 +156,7 @@ class PBXManager extends CRMEntity {
         $restoreEvent = 'vtiger.entity.afterrestore';
         $batchSaveEvent = 'vtiger.batchevent.save';
         $batchDeleteEvent = 'vtiger.batchevent.delete';
-		$convertLeadEvent = 'vtiger.lead.convertlead';
+        $convertLeadEvent = 'vtiger.lead.convertlead';
         $handler_path = 'modules/PBXManager/PBXManagerHandler.php';
         $className = 'PBXManagerHandler';
         $batchEventClassName = 'PBXManagerBatchHandler';
@@ -165,7 +165,7 @@ class PBXManager extends CRMEntity {
         $EventManager->registerHandler($restoreEvent, $handler_path, $className);
         $EventManager->registerHandler($batchSaveEvent, $handler_path, $batchEventClassName);
         $EventManager->registerHandler($batchDeleteEvent, $handler_path, $batchEventClassName);
-		$EventManager->registerHandler($convertLeadEvent, $handler_path, $className);
+        $EventManager->registerHandler($convertLeadEvent, $handler_path, $className);
         $log->fatal('Lookup Events Registered');
     }
     
@@ -213,7 +213,7 @@ class PBXManager extends CRMEntity {
      * To add a link in vtiger_links which is to load our PBXManagerJS.js 
      */
      function addLinksForPBXManager() {
-         global $log;
+        global $log;
         $handlerInfo = array('path' => 'modules/PBXManager/PBXManager.php',
             'class' => 'PBXManager',
             'method' => 'checkLinkPermission');
@@ -227,10 +227,11 @@ class PBXManager extends CRMEntity {
      */
     function removeLinksForPBXManager() {
         global $log;
+
         //Deleting Headerscripts links
         Vtiger_Link::deleteLink($this->tabId, $this->headerScriptLinkType, $this->incominglinkLabel,'modules/PBXManager/resources/PBXManagerJS.js');
         $log->fatal('Links Removed');
-	}
+    }
     
     /**
      * To add Integration->PBXManager block in Settings page
@@ -242,12 +243,12 @@ class PBXManager extends CRMEntity {
         $integrationBlockCount = $adb->num_rows($integrationBlock);
         
         // To add Block
-        if($integrationBlockCount > 0){
+        if ($integrationBlockCount > 0) {
             $blockid = $adb->query_result($integrationBlock, 0, 'blockid');
-        }else{
+        } else {
             $blockid = $adb->getUniqueID('vtiger_settings_blocks');
             $sequenceResult = $adb->pquery("SELECT max(sequence) as sequence FROM vtiger_settings_blocks", array());
-            if($adb->num_rows($sequenceResult)) {
+            if ($adb->num_rows($sequenceResult)) {
                 $sequence = $adb->query_result($sequenceResult, 0, 'sequence');
             }
             $adb->pquery("INSERT INTO vtiger_settings_blocks(blockid, label, sequence) VALUES(?,?,?)", array($blockid, 'LBL_INTEGRATION', ++$sequence));
@@ -276,6 +277,7 @@ class PBXManager extends CRMEntity {
      */
      function addActionMapping() {
         global $log;
+
         $adb = PearDatabase::getInstance();
         $module = new Vtiger_Module();
         $moduleInstance = $module->getInstance('PBXManager');
@@ -327,8 +329,7 @@ class PBXManager extends CRMEntity {
         
         if($moduleInstance) {
             return true;
-        }else {
-            return false;
         }
+        return false;
     }
 }

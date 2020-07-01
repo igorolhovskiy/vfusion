@@ -28,7 +28,7 @@ class PBXManager_Server_Model extends Vtiger_Base_Model{
         $gatewatResult = $db->pquery($query, array());
         $gatewatResultCount = $db->num_rows($gatewatResult);
         
-        if($gatewatResultCount > 0) {
+        if ($gatewatResultCount > 0) {
             $rowData = $db->query_result_rowdata($gatewatResult, 0);
             $serverModel->set('gateway',$rowData['gateway']);
             $serverModel->set('id',$rowData['id']);
@@ -42,17 +42,16 @@ class PBXManager_Server_Model extends Vtiger_Base_Model{
     }
     
     public static function checkPermissionForOutgoingCall(){
-            Users_Privileges_Model::getCurrentUserPrivilegesModel();
-            $permission = Users_Privileges_Model::isPermitted('PBXManager', 'MakeOutgoingCalls');
+        Users_Privileges_Model::getCurrentUserPrivilegesModel();
+        $permission = Users_Privileges_Model::isPermitted('PBXManager', 'MakeOutgoingCalls');
 
-            $serverModel = PBXManager_Server_Model::getInstance();
-            $gateway = $serverModel->get('gateway');
-            
-            if($permission && $gateway){
-                return true;
-            }else {
-                return false;
-            }
+        $serverModel = PBXManager_Server_Model::getInstance();
+        $gateway = $serverModel->get('gateway');
+        
+        if ($permission && $gateway) {
+            return true;
+        }
+        return false;
     }
     
     public static function generateVtigerSecretKey() {
