@@ -71,7 +71,7 @@ class PBXManager_ListView_Model extends Vtiger_ListView_Model {
 
         $listViewContoller = $this->get('listview_controller');
 
-        // SalesPlatform.ru begin
+        // SPManager begin
         $searchParams = $this->get('search_params');
         if(empty($searchParams)) {
             $searchParams = array();
@@ -81,7 +81,7 @@ class PBXManager_ListView_Model extends Vtiger_ListView_Model {
             $glue = QueryGenerator::$AND;
         }
         $queryGenerator->parseAdvFilterList($searchParams, $glue);
-        // SalesPlatform.ru end
+        // SPManager end
 
         $searchKey = $this->get('search_key');
         $searchValue = $this->get('search_value');
@@ -178,12 +178,12 @@ class PBXManager_ListView_Model extends Vtiger_ListView_Model {
             $recordingUrl = explode('>', $listViewEntries[$recordId]['recordingurl']);
             $url = explode('<', $recordingUrl[1]);
             if ($url[0] != '' && $listViewEntries[$recordId]['callstatus'] == 'completed') {
-                // SalesPlatform.ru begin
+                // SPManager begin
                 $listViewEntries[$recordId]['recordingurl'] = '<audio preload="metadata" src="index.php?module=PBXManager&action=ListenRecord&record='.$recordId.'" controls>
                     <a href="index.php?module=PBXManager&action=ListenRecord&record='.$recordId.'" ><i class="icon-volume-up"></i></a>
                 </audio>';
                 //$listViewEntries[$recordId]['recordingurl'] = $recordingUrl[0] . '>' . '<i class="icon-volume-up"></i>' . '</a>';
-                // SalesPlatform.ru end
+                // SPManager end
             } else {
                 $listViewEntries[$recordId]['recordingurl'] = '';
             }
@@ -194,72 +194,72 @@ class PBXManager_ListView_Model extends Vtiger_ListView_Model {
                     $listViewEntries[$recordId]['callstatus'] = '<span class="label label-info"><i class="fa fa-arrow-up">
                         </i>&nbsp;' . vtranslate($listViewEntries[$recordId]["callstatus"], $moduleName) . '</span>';
                         //</i>&nbsp;' . $listViewEntries[$recordId]["callstatus"] . '</span>';
-                        // SalesPlatform.ru end
+                        // SPManager end
                 } else if ($listViewEntries[$recordId]['callstatus'] == 'completed') {
                     $listViewEntries[$recordId]['callstatus'] = '<span class="label label-success"><i class="fa fa-arrow-up">
                         </i>&nbsp;' . vtranslate($listViewEntries[$recordId]["callstatus"], $moduleName) . '</span>';
                         //</i>&nbsp;' . $listViewEntries[$recordId]["callstatus"] . '</span>';
-                        // SalesPlatform.ru end
+                        // SPManager end
                 } else if ($listViewEntries[$recordId]['callstatus'] == 'no-answer') {
                     $listViewEntries[$recordId]['callstatus'] = '<span class="label label-danger"><i class="fa fa-arrow-up">
                         </i>&nbsp;' . vtranslate($listViewEntries[$recordId]["callstatus"], $moduleName) . '</span>';
                         //</i>&nbsp;' . $listViewEntries[$recordId]["callstatus"] . '</span>';
-                        // SalesPlatform.ru end
+                        // SPManager end
                 } else {
                     $listViewEntries[$recordId]['callstatus'] = '<span class="label label-warning"><i class="fa fa-arrow-up">
                         </i>&nbsp;' . vtranslate($listViewEntries[$recordId]["callstatus"], $moduleName) . '</span>';
                         //</i>&nbsp;' . $listViewEntries[$recordId]["callstatus"] . '</span>';
-                        // SalesPlatform.ru end
+                        // SPManager end
                 }
             } else if ($listViewEntries[$recordId]['direction'] == 'inbound') {
                 if ($listViewEntries[$recordId]['callstatus'] == 'ringing' || $listViewEntries[$recordId]['callstatus'] == 'in-progress') {
                     $listViewEntries[$recordId]['callstatus'] = '<span class="label label-info"><i class="fa fa-arrow-down">
                         </i>&nbsp;' . vtranslate($listViewEntries[$recordId]["callstatus"], $moduleName) . '</span>';
                         //</i>&nbsp;' . $listViewEntries[$recordId]["callstatus"] . '</span>';
-                        // SalesPlatform.ru end
+                        // SPManager end
                 } else if ($listViewEntries[$recordId]['callstatus'] == 'completed') {
                     $listViewEntries[$recordId]['callstatus'] = '<span class="label label-success"><i class="fa fa-arrow-down">
                         </i>&nbsp;' . vtranslate($listViewEntries[$recordId]["callstatus"], $moduleName) . '</span>';
                         //</i>&nbsp;' . $listViewEntries[$recordId]["callstatus"] . '</span>';
-                    // SalesPlatform.ru end
+                    // SPManager end
                 } else if ($listViewEntries[$recordId]['callstatus'] == 'no-answer') {
                     $listViewEntries[$recordId]['callstatus'] = '<span class="label label-danger"><i class="fa fa-arrow-down">
                         </i>&nbsp;' . vtranslate($listViewEntries[$recordId]["callstatus"], $moduleName) . '</span>';
                         //</i>&nbsp;' . $listViewEntries[$recordId]["callstatus"] . '</span>';
-                        // SalesPlatform.ru end
+                        // SPManager end
                 } else {
                     $listViewEntries[$recordId]['callstatus'] = '<span class="label label-warning"><i class="fa fa-arrow-down">
                         </i>&nbsp;' . vtranslate($listViewEntries[$recordId]["callstatus"], $moduleName) . '</span>';
                         //</i>&nbsp;' . $listViewEntries[$recordId]["callstatus"] . '</span>';
-                        // SalesPlatform.ru end
+                        // SPManager end
                 }
             } else if ($listViewEntries[$recordId]['direction'] == 'local') {
                 if ($listViewEntries[$recordId]['callstatus'] == 'ringing' || $listViewEntries[$recordId]['callstatus'] == 'in-progress') {
                     $listViewEntries[$recordId]['callstatus'] = '<span class="label label-info"><i class="fa fa-arrows-h">
                         </i>&nbsp;' . vtranslate($listViewEntries[$recordId]["callstatus"], $moduleName) . '</span>';
                         //</i>&nbsp;' . $listViewEntries[$recordId]["callstatus"] . '</span>';
-                        // SalesPlatform.ru end
+                        // SPManager end
                 } else if ($listViewEntries[$recordId]['callstatus'] == 'completed') {
                     $listViewEntries[$recordId]['callstatus'] = '<span class="label label-success"><i class="fa fa-arrows-h">
                         </i>&nbsp;' . vtranslate($listViewEntries[$recordId]["callstatus"], $moduleName) . '</span>';
                         //</i>&nbsp;' . $listViewEntries[$recordId]["callstatus"] . '</span>';
-                    // SalesPlatform.ru end
+                    // SPManager end
                 } else if ($listViewEntries[$recordId]['callstatus'] == 'no-answer') {
                     $listViewEntries[$recordId]['callstatus'] = '<span class="label label-danger"><i class="fa fa-arrows-h">
                         </i>&nbsp;' . vtranslate($listViewEntries[$recordId]["callstatus"], $moduleName) . '</span>';
                         //</i>&nbsp;' . $listViewEntries[$recordId]["callstatus"] . '</span>';
-                        // SalesPlatform.ru end
+                        // SPManager end
                 } else {
                     $listViewEntries[$recordId]['callstatus'] = '<span class="label label-warning"><i class="fa fa-arrows-h">
                         </i>&nbsp;' . vtranslate($listViewEntries[$recordId]["callstatus"], $moduleName) . '</span>';
                         //</i>&nbsp;' . $listViewEntries[$recordId]["callstatus"] . '</span>';
-                        // SalesPlatform.ru end
+                        // SPManager end
                 }
             }
 
-            // SalesPlatform.ru begin
+            // SPManager begin
             $listViewEntries[$recordId]['direction'] = vtranslate($listViewEntries[$recordId]['direction'], $moduleName);
-            // SalesPlatform.ru end
+            // SPManager end
 
         }
         //END

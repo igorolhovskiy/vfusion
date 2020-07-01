@@ -52,10 +52,10 @@
     <script type="text/javascript" src="{vresource_url('layouts/v7/modules/Google/resources/Settings.js')}"></script>
     <script type="text/javascript" src="{vresource_url('layouts/v7/modules/Vtiger/resources/CkEditor.js')}"></script>
     <script type="text/javascript" src="{vresource_url('layouts/v7/modules/Documents/resources/Documents.js')}"></script>
-    {*Salesplatform.ru begin PBXManager porting*}
+    {*SPManager begin PBXManager porting*}
     <script type="text/javascript" src="modules/PBXManager/resources/visibility.min.js"></script>
     <script type="text/javascript" src="libraries/jquery/pnotify/jquery.pnotify.min.js"></script>
-    {*Salesplatform.ru end PBXManager porting*}
+    {*SPManager end PBXManager porting*}
    
     {foreach key=index item=jsModel from=$SCRIPTS}
         <script type="{$jsModel->getType()}" src="{vresource_url($jsModel->getSrc())}"></script>
