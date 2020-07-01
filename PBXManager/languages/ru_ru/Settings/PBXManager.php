@@ -11,18 +11,18 @@
 $languageStrings = array(
     'LBL_SELECT_ONE' => 'Выберите',
     'LBL_PBXManager' =>'PBXManager',
-    'LBL_PBXMANAGER_CONFIG' => 'Подробные сведения о сервере Asterisk',
-    'LBL_NOTE' => 'Note:',
-    'LBL_INFO_WEBAPP_URL' => 'Настройте URL Asterisk App в формате', 
-    'LBL_FORMAT_WEBAPP_URL' => '(Протокол) :/ / (asterisk_ip): (порт)',
-    'LBL_FORMAT_INFO_WEBAPP_URL' => 'например: http://0.0.0.0:5000',
-    'LBL_INFO_CONTEXT' => 'Vtiger конкретном контексте, сконфигурированные в вашей Asterisk сервера (extensions.conf)',
-    'LBL_PBXMANAGER_INFO' => 'Настроить Asterisk сервер детали после Установка Vtiger звездочка разъем вашего сервера Asterisk',
+    'LBL_PBXMANAGER_CONFIG' => 'Подробные сведения',
+    'LBL_NOTE' => 'Справка:',
+    'LBL_INFO_WEBAPP_URL' => 'Настройте URL FusionPBX в формате', 
+    'LBL_FORMAT_WEBAPP_URL' => '(Протокол) :/ / (fusionpbx_ip): (порт)',
+    'LBL_FORMAT_INFO_WEBAPP_URL' => 'например: https://myfusionpbx.com:5000',
+    'LBL_INFO_CONTEXT' => 'VFusion Connector',
+    'LBL_PBXMANAGER_INFO' => 'Настройте эти поля после установки VFusion Daemon на Вашем FusionPBX сервере',
     
-    'webappurl'=>'Vtiger Askterisk веб URL',
-    'vtigersecretkey'=>'Vtiger Секретный ключ',
-    'outboundcontext' => 'Исходящий Контекст',
-    'outboundtrunk' => 'Исходящий багажника',
+    'webappurl'=>'FusionPBX URL',
+    'vtigersecretkey'=>'Vtiger API ключ',
+    'outboundcontext' => 'Путь к Click2Call приложению',
+    'outboundtrunk' => 'Fusion API ключ',
     
 );
 

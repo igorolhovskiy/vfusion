@@ -15,11 +15,11 @@ $languageStrings = array(
     'LBL_NOTE' => 'Note:',
     'LBL_INFO_WEBAPP_URL' => 'Configure your FusionPBX App URL in the format', 
     'LBL_FORMAT_WEBAPP_URL' => '(protocol)://(fusionpbx_address):(port)',
-    'LBL_FORMAT_INFO_WEBAPP_URL' => 'ex:http://mypbx.net:8080',
-    'LBL_INFO_CONTEXT' => 'Vtiger Spezifischer Kontext in Ihrer Asterisk-Server konfiguriert (extensions.conf)', // - ?
-    'LBL_PBXMANAGER_INFO' => 'Configure Asterisk Server Details after Installing Vtiger Asterisk Connector in your Asterisk Server', // - ?
+    'LBL_FORMAT_INFO_WEBAPP_URL' => 'ex : https://mypbx.net:8080',
+    'LBL_INFO_CONTEXT' => 'VFusion Connector', // - ?
+    'LBL_PBXMANAGER_INFO' => 'Configure FusionPBX Server Details after Installing VFusion Daemon in your Fusion Server', // - ?
     
-    'webappurl'=>'FusionPBX App URL',
+    'webappurl'=>'FusionPBX URL',
     'vtigersecretkey'=>'Vtiger API Key',
     'outboundcontext' => 'Click2Call App path',
     'outboundtrunk' => 'Fusion API Key',
