@@ -26,7 +26,7 @@ class PBXManager_OutgoingCall_Action extends Vtiger_Action_Controller{
         $gateway = $serverModel->get("gateway");
         $response = new Vtiger_Response();
         $user = Users_Record_Model::getCurrentUserModel();
-	    $userNumber = $user->phone_crm_extension;
+	$userNumber = $user->phone_crm_extension;
         
         if($gateway && $userNumber){
             try{
@@ -35,10 +35,10 @@ class PBXManager_OutgoingCall_Action extends Vtiger_Action_Controller{
                 $connector = $serverModel->getConnector();
                 $result = $connector->call($number, $recordId);
                 $response->setResult($result);
-            } catch (Exception $e){
+            }catch(Exception $e){
                 throw new Exception($e);
             }
-        } else {
+        }else{
             $response->setResult(false);
         }
         $response->emit();

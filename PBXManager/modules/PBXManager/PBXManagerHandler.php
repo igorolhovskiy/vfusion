@@ -21,11 +21,11 @@ class PBXManagerHandler extends VTEventHandler {
             PBXManagerHandler::handlePhoneLookUpSaveEvent($entityData, $moduleName);
         }
  
-        if ($eventName == 'vtiger.lead.convertlead' && $moduleName == 'Leads') {
-            PBXManagerHandler::handlePhoneLookupDeleteEvent($entityData);
-        }
+		if ($eventName == 'vtiger.lead.convertlead' && $moduleName == 'Leads') {
+			PBXManagerHandler::handlePhoneLookupDeleteEvent($entityData);
+		}
 
-        if($eventName == 'vtiger.entity.afterdelete'){
+		if($eventName == 'vtiger.entity.afterdelete'){
             PBXManagerHandler::handlePhoneLookupDeleteEvent($entityData);
         }
         
@@ -46,12 +46,11 @@ class PBXManagerHandler extends VTEventHandler {
         $fieldsModel = $moduleInstance->getFieldsByType('phone');
         
         foreach ($fieldsModel as $field => $fieldName) {
-            $fieldName = $fieldName->get('name');      
-            $values[$fieldName] = $data[$fieldName];
-            
-            if($values[$fieldName]) {
-                $recordModel->receivePhoneLookUpRecord($fieldName, $values, true);
-            }
+                $fieldName = $fieldName->get('name');      
+                $values[$fieldName] = $data[$fieldName];
+                
+                if($values[$fieldName])
+                    $recordModel->receivePhoneLookUpRecord($fieldName, $values, true);
         }
     }
     
@@ -78,9 +77,8 @@ class PBXManagerHandler extends VTEventHandler {
             $fieldName = $fieldName->get('name');  
             $values[$fieldName] = $recordmodel->get($fieldName);
             
-            if($values[$fieldName]) {
+            if($values[$fieldName])
                  $recordModel->receivePhoneLookUpRecord($fieldName, $values, true);
-            }
         }
     }
 
@@ -93,9 +91,8 @@ class PBXManagerBatchHandler extends VTEventHandler {
             $moduleName = $entityData->getModuleName();
 
             $acceptedModule = array('Contacts','Accounts','Leads');
-            if(!in_array($moduleName, $acceptedModule)) {
+            if(!in_array($moduleName, $acceptedModule))
                 return;
-            }
 
             if ($eventName == 'vtiger.batchevent.save') {
                 PBXManagerHandler::handlePhoneLookUpSaveEvent($entityData, $moduleName);

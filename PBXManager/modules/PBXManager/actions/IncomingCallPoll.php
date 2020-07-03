@@ -13,43 +13,44 @@ include_once 'include/utils/utils.php';
 class PBXManager_IncomingCallPoll_Action extends Vtiger_Action_Controller{
     
     function __construct() {
-        $this->exposeMethod('searchIncomingCalls');
-        $this->exposeMethod('createRecord');
-        $this->exposeMethod('getCallStatus');
-        $this->exposeMethod('checkModuleViewPermission');
-        $this->exposeMethod('checkPermissionForPolling');
-        $this->exposeMethod('closeRecordPopup');
-       }
+            $this->exposeMethod('searchIncomingCalls');
+            $this->exposeMethod('createRecord');
+            $this->exposeMethod('getCallStatus');
+            $this->exposeMethod('checkModuleViewPermission');
+            $this->exposeMethod('checkPermissionForPolling');
+	    $this->exposeMethod('closeRecordPopup');
+   	}
     
     public function process(Vtiger_Request $request) {
-        //$logFusion =& LoggerManager::getLogger('fusion');
-        $mode = $request->getMode();
-        if(!empty($mode) && $this->isMethodExposed($mode)) {
-            $this->invokeExposedMethod($mode, $request);
-            return;
-        }
-    }
+		//$logFusion =& LoggerManager::getLogger('fusion');
+		$mode = $request->getMode();
+		if(!empty($mode) && $this->isMethodExposed($mode)) {
+			$this->invokeExposedMethod($mode, $request);
+			return;
+		}
+	}
     
     public function checkPermission(Vtiger_Request $request) {
-        $moduleName = $request->getModule();
-        $moduleModel = Vtiger_Module_Model::getInstance($moduleName);
-        $userPrivilegesModel = Users_Privileges_Model::getCurrentUserPrivilegesModel();
-        $permission = $userPrivilegesModel->hasModulePermission($moduleModel->getId());
+		$moduleName = $request->getModule();
+		$moduleModel = Vtiger_Module_Model::getInstance($moduleName);
+		$userPrivilegesModel = Users_Privileges_Model::getCurrentUserPrivilegesModel();
+		$permission = $userPrivilegesModel->hasModulePermission($moduleModel->getId());
 
-        if(!$permission) {
-            throw new AppException('LBL_PERMISSION_DENIED');
-        }
-    }
+		if(!$permission) {
+			throw new AppException('LBL_PERMISSION_DENIED');
+		}
+	}
     
     public function checkModuleViewPermission(Vtiger_Request $request){
         $response = new Vtiger_Response();
         $modules = array('Contacts','Leads');
         $view = $request->get('view');
         Users_Privileges_Model::getCurrentUserPrivilegesModel();
-        foreach($modules as $module) {
-            $result['modules'][$module] = false;
-            if(Users_Privileges_Model::isPermitted($module, $view)) {
+        foreach($modules as $module){
+            if(Users_Privileges_Model::isPermitted($module, $view)){
                 $result['modules'][$module] = true;
+            }else{
+                $result['modules'][$module] = false;
             }
         }
         $response->setResult($result);
@@ -57,29 +58,27 @@ class PBXManager_IncomingCallPoll_Action extends Vtiger_Action_Controller{
     }
     
     public function searchIncomingCalls(Vtiger_Request $request){
-        //$logFusion =& LoggerManager::getLogger('fusion');
+	//$logFusion =& LoggerManager::getLogger('fusion');
         $recordModel = PBXManager_Record_Model::getCleanInstance();
         $response = new Vtiger_Response();
-        $user = Users_Record_Model::getCurrentUserModel();
-        
+        $user = Users_Record_Model::getCurrentUserModel();        
         $recordModels = $recordModel->searchIncomingCall();
-        //$logFusion->debug("PBX searchIncomingCalls L1");
+	//$logFusion->debug("PBX searchIncomingCalls L1");
         // To check whether user have permission on caller record
-        if($recordModels) {
-            //$logFusion->debug("PBX searchIncomingCalls recordModels exist");
-            foreach ($recordModels as $recordModel) {
-                //$logFusion->debug("PBX searchIncomingCalls recordModel_pbxmanagerid=".$recordModel->get('pbxmanagerid')); 
+        if($recordModels){
+	    //$logFusion->debug("PBX searchIncomingCalls recordModels exist");
+            foreach ($recordModels as $recordModel){
+		//$logFusion->debug("PBX searchIncomingCalls recordModel_pbxmanagerid=".$recordModel->get('pbxmanagerid')); 
                 // To check whether the user has permission to see contact name in popup
-                $recordModel->set('callername', null);
-    
+                $recordModel->set('callername', null);	
                 $callerid = $recordModel->get('customer');
-        //$logFusion->debug("PBX searchIncomingCalls callerid=".$callerid);
+		//$logFusion->debug("PBX searchIncomingCalls callerid=".$callerid);
                 if($callerid){
                     $moduleName = $recordModel->get('customertype');
                     if(!Users_Privileges_Model::isPermitted($moduleName, 'DetailView', $callerid)){
                         $name = $recordModel->get('customernumber').vtranslate('LBL_HIDDEN','PBXManager');
                         $recordModel->set('callername',$name);
-                    } else {
+                    }else{
                         $entityNames = getEntityName($moduleName, array($callerid));
                         $callerName = $entityNames[$callerid];
                         $recordModel->set('callername',$callerName);
@@ -87,21 +86,21 @@ class PBXManager_IncomingCallPoll_Action extends Vtiger_Action_Controller{
                 }
                 // End
                 $direction = $recordModel->get('direction');
-                if($direction == 'inbound') {
+                if($direction == 'inbound'){
                     $userid = $recordModel->get('user');
-                    if ($userid) {
+                    if($userid){
                         $entityNames = getEntityName('Users', array($userid));
                         $userName = $entityNames[$userid];
                         $recordModel->set('answeredby',$userName);
                     }
                 } elseif ($direction == 'local') {
-                    $customername=$recordModel->localCallerName();
-                    if (!$customername) {
-                        $customername=$recordModel->get('customernumber');
-                    }
-                    $recordModel->set('callername',$customername);
-                    //$logFusion->debug("PBX searchIncomingCalls direction=".$direction." customernumber=".$recordModel->get('customernumber')." customername=".$customername);	
-                }
+		    $customername=$recordModel->localCallerName();
+		    if (!$customername) {
+			$customername=$recordModel->get('customernumber');
+		    }
+		    $recordModel->set('callername',$customername);
+		    //$logFusion->debug("PBX searchIncomingCalls direction=".$direction." customernumber=".$recordModel->get('customernumber')." customername=".$customername);	
+		}
                 $recordModel->set('current_user_id',$user->id);
                 $calls[] = $recordModel->getData();
             }
@@ -110,46 +109,47 @@ class PBXManager_IncomingCallPoll_Action extends Vtiger_Action_Controller{
         $response->emit();
     }
     
-   public function createRecord(Vtiger_Request $request) {
-
-        $user = Users_Record_Model::getCurrentUserModel();
-        
-        $moduleName = 'Contacts';
-        if ($request->get('modulename')) {
-            $moduleName = $request->get('modulename');
-        }
+   public function createRecord(Vtiger_Request $request){
+            $user = Users_Record_Model::getCurrentUserModel();
+	    
+	    if ($request->get('modulename')) {
+        	$moduleName = $request->get('modulename');
+	    } else {
+		$moduleName = 'Contacts';
+	    }
             //$name = explode("@",$request->get('email'));
             //$element['lastname'] = $name[0];
-        if ($request->get('lastname')) {
-            $element['lastname'] = $request->get('lastname');
-        } else {
-            $element['lastname'] = $request->get('number');
-        }
-        //$element['email'] = $request->get('email');
-        $element['phone'] = $request->get('number');
-        $element['assigned_user_id'] = vtws_getWebserviceEntityId('Users', $user->id);
-        
-        $moduleInstance = Vtiger_Module_Model::getInstance($moduleName);
-        $mandatoryFieldModels = $moduleInstance->getMandatoryFieldModels();
-        foreach ($mandatoryFieldModels as $mandatoryField) {
-            $fieldName = $mandatoryField->get('name');
-            $fieldType = $mandatoryField->getFieldDataType();
-            $defaultValue = decode_html($mandatoryField->get('defaultvalue'));
+	    if ( $request->get('lastname')) {
+		$element['lastname'] = $request->get('lastname');
+            } else {
+		$element['lastname'] = $request->get('number');
+	    }
+	    //$element['email'] = $request->get('email');
+            $element['phone'] = $request->get('number');
+            $element['assigned_user_id'] = vtws_getWebserviceEntityId('Users', $user->id);
             
-            if (empty($element[$fieldName])) {
-                $fieldValue = $defaultValue;
-                if (empty($fieldValue)) {
-                    $fieldValue = Vtiger_Util_Helper::getDefaultMandatoryValue($fieldType);
+            $moduleInstance = Vtiger_Module_Model::getInstance($moduleName);
+            $mandatoryFieldModels = $moduleInstance->getMandatoryFieldModels();
+            foreach($mandatoryFieldModels as $mandatoryField){
+                $fieldName = $mandatoryField->get('name');
+                $fieldType = $mandatoryField->getFieldDataType();
+                $defaultValue = decode_html($mandatoryField->get('defaultvalue'));
+                if(!empty($element[$fieldName])){
+                    continue;
+                }else{
+                    $fieldValue = $defaultValue;
+                    if(empty($fieldValue)) {
+                        $fieldValue = Vtiger_Util_Helper::getDefaultMandatoryValue($fieldType);
+                    }
+                    $element[$fieldName] = $fieldValue ;
                 }
-                $element[$fieldName] = $fieldValue ;
             }
-        }
-        
-        $entity = vtws_create($moduleName, $element, $user);
-        $this->updateCustomerInPhoneCalls($entity, $request);
-        $response = new Vtiger_Response();
-        $response->setResult(true);
-        $response->emit();
+            
+            $entity = vtws_create($moduleName, $element, $user);
+            $this->updateCustomerInPhoneCalls($entity, $request);
+            $response = new Vtiger_Response();
+            $response->setResult(true);
+            $response->emit();
     }
     
     public function updateCustomerInPhoneCalls($customer, $request){
@@ -162,15 +162,15 @@ class PBXManager_IncomingCallPoll_Action extends Vtiger_Action_Controller{
     
     
     public function closeRecordPopup($request){
-    //$logFusion =& LoggerManager::getLogger('fusion');
+	//$logFusion =& LoggerManager::getLogger('fusion');
         $phonecallsid = $request->get('callid');
-        $flagcall = $request->get('flag');
-        $pbxmanagerid = $request->get('pbxmanagerid');
-        //$logFusion->debug("PBX closeRecordPopup phonecallsid=".$phonecallsid." flag=".$flagcall." pbxmanagerid=".$pbxmanagerid);
+	$flagcall=$request->get('flag');
+	$pbxmanagerid=$request->get('pbxmanagerid');
+	//$logFusion->debug("PBX closeRecordPopup phonecallsid=".$phonecallsid." flag=".$flagcall." pbxmanagerid=".$pbxmanagerid);
         $recordModel = PBXManager_Record_Model::getInstanceById($pbxmanagerid);
         $response = new Vtiger_Response();
-        $recordModel->set('flag',$flagcall);
-        $recordModel->updateCallDetails(array('flag'=>$flagcall));
+	$recordModel->set('flag',$flagcall);
+	$recordModel->updateCallDetails(array('flag'=>$flagcall));
         $response->setResult(true);
         $response->emit();
     }
@@ -178,17 +178,16 @@ class PBXManager_IncomingCallPoll_Action extends Vtiger_Action_Controller{
     
 
     public function getCallStatus($request){
-    //$logFusion =& LoggerManager::getLogger('fusion');
+	//$logFusion =& LoggerManager::getLogger('fusion');
         $phonecallsid = $request->get('callid');
-    //$logFusion->debug("PBX getCallStatus phonecallsid=".$phonecallsid);
+	//$logFusion->debug("PBX getCallStatus phonecallsid=".$phonecallsid);
         $recordModel = PBXManager_Record_Model::getInstanceById($phonecallsid);
         $response = new Vtiger_Response();
-        $data[] = array(
-            'callstatus' => $recordModel->get('callstatus'),
-            'flag' => $recordModel->get('flag'),
-            'customer' => $recordModel->get('customer'),
-            'direction' => $recordModel->get('direction')
-        );
+	$data[]=array();
+	$data['callstatus']=$recordModel->get('callstatus');
+	$data['flag']=$recordModel->get('flag');
+	$data['customer']=$recordModel->get('customer');
+	$data['direction']=$recordModel->get('direction');
         $response->setResult($data);
         $response->emit();
     }
@@ -204,7 +203,7 @@ class PBXManager_IncomingCallPoll_Action extends Vtiger_Action_Controller{
         $userNumber = $user->phone_crm_extension;
         
         $result = false;
-        if($callPermission && $userNumber && $gateway ) {
+        if($callPermission && $userNumber && $gateway ){
             $result = true;
         }
         
@@ -212,6 +211,7 @@ class PBXManager_IncomingCallPoll_Action extends Vtiger_Action_Controller{
         $response->setResult($result);
         $response->emit();
     }
+
 }
 
 ?>

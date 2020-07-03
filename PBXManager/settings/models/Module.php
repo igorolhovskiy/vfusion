@@ -11,33 +11,33 @@
 class Settings_PBXManager_Module_Model extends Settings_Vtiger_Module_Model{
     
     /**
-     * Function to get the module model
-     * @return string
-     */
+	 * Function to get the module model
+	 * @return string
+	 */
     public static function getCleanInstance(){
         return new self;
     }
     
     /**
-     * Function to get the ListView Component Name
-     * @return string
-     */
+	 * Function to get the ListView Component Name
+	 * @return string
+	 */
     public function getDefaultViewName() {
-        return 'Index';
-    }
+		return 'Index';
+	}
+    
+	/**
+	 * Function to get the EditView Component Name
+	 * @return string
+	 */
+	public function getEditViewName(){
+		return 'Edit';
+	}
     
     /**
-     * Function to get the EditView Component Name
-     * @return string
-     */
-    public function getEditViewName(){
-        return 'Edit';
-    }
-    
-    /**
-     * Function to get the Module Name
-     * @return string
-     */
+	 * Function to get the Module Name
+	 * @return string
+	 */
     public function getModuleName(){
         return "PBXManager";
     }
@@ -47,15 +47,15 @@ class Settings_PBXManager_Module_Model extends Settings_Vtiger_Module_Model{
     }
     
     public function getModule($raw=true) {
-        $moduleName = Settings_PBXManager_Module_Model::getModuleName();
-        if(!$raw) {
-            $parentModule = Settings_PBXManager_Module_Model::getParentName();
-            if(!empty($parentModule)) {
-                $moduleName = $parentModule.':'.$moduleName;
-            }
-        }
-        return $moduleName;
-    }
+		$moduleName = Settings_PBXManager_Module_Model::getModuleName();
+		if(!$raw) {
+			$parentModule = Settings_PBXManager_Module_Model::getParentName();
+			if(!empty($parentModule)) {
+				$moduleName = $parentModule.':'.$moduleName;
+			}
+		}
+		return $moduleName;
+	}
     
     public function getMenuItem() {
         $menuItem = Settings_Vtiger_MenuItem_Model::getInstance('LBL_PBXMANAGER');
@@ -67,7 +67,7 @@ class Settings_PBXManager_Module_Model extends Settings_Vtiger_Module_Model{
     * @return <string> - url
     */
     public function getDefaultUrl() {
-        return 'index.php?module='.$this->getModuleName().'&parent=Settings&view='.$this->getDefaultViewName();
+            return 'index.php?module='.$this->getModuleName().'&parent=Settings&view='.$this->getDefaultViewName();
     }
 
     public function getDetailViewUrl() {
@@ -81,8 +81,8 @@ class Settings_PBXManager_Module_Model extends Settings_Vtiger_Module_Model{
     * @return <string> - url
     */
     public function getEditViewUrl() {
-        $menuItem = $this->getMenuItem();
-        return 'index.php?module='.$this->getModuleName().'&parent=Settings&view='.$this->getEditViewName().'&block='.$menuItem->get('blockid').'&fieldid='.$menuItem->get('fieldid');
+            $menuItem = $this->getMenuItem();
+            return 'index.php?module='.$this->getModuleName().'&parent=Settings&view='.$this->getEditViewName().'&block='.$menuItem->get('blockid').'&fieldid='.$menuItem->get('fieldid');
     }
     
 }

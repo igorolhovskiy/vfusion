@@ -16,7 +16,7 @@ vimport('includes.http.Request');
 class PBXManager_PBXManager_Callbacks {
     
     function validateRequest($vtigersecretkey,$request) {
-    //$logFusion =& LoggerManager::getLogger('fusion');
+	//$logFusion =& LoggerManager::getLogger('fusion');
         if($vtigersecretkey == $request->get('vtigersignature')){
             return true;
         }
@@ -24,22 +24,27 @@ class PBXManager_PBXManager_Callbacks {
     }
 
     function process($request){
-        //$logFusion =& LoggerManager::getLogger('fusion');
-        if ($_SERVER["REQUEST_METHOD"] == "POST"){
-            $request_json = json_decode(file_get_contents('php://input'),TRUE);
-        }    
-        foreach ($request_json as $key => $value) {
-            $request->set($key,$value);
-        }    
+	    //$logFusion =& LoggerManager::getLogger('fusion');
+	  if ($_SERVER["REQUEST_METHOD"] == "POST"){
+        	$request_json = json_decode(file_get_contents('php://input'),TRUE);
+	  }    
+	  foreach ($request_json as $key => $value) {
+		$request->set($key,$value);
+	  }    
 
-        $pbxmanagerController = new PBXManager_PBXManager_Controller();
+	$pbxmanagerController = new PBXManager_PBXManager_Controller();
         $connector = $pbxmanagerController->getConnector();
-        $ipfusion = $connector->getFusionIP();
-        //$logFusion->debug("PBX PROCESS REQUEST REMOTE_ADDR=".$_SERVER['REMOTE_ADDR']." ipfusion=".$ipfusion);
-        if ($ipfusion && $_SERVER['REMOTE_ADDR'] !== $ipfusion) {
-            return;
-        }
-        if ($this->validateRequest($connector->getVtigerSecretKey(), $request)) {
+	$ipfusion = $connector->getFusionIP();
+	//$logFusion->debug("PBX PROCESS REQUEST REMOTE_ADDR=".$_SERVER['REMOTE_ADDR']." ipfusion=".$ipfusion);
+	if ($ipfusion) {
+	    if ( $_SERVER['REMOTE_ADDR'] === $ipfusion ) {
+		////$logFusion->debug("PBX PROCESS REQUEST OK REMOTE_ADDR=".$_SERVER['REMOTE_ADDR']." ipfusion=".$ipfusion);
+	    } else {
+		//$logFusion->debug("PBX PROCESS REQUEST NOT OK REMOTE_ADDR=".$_SERVER['REMOTE_ADDR']." ipfusion=".$ipfusion);
+		return;
+	    }
+	}
+        if($this->validateRequest($connector->getVtigerSecretKey(),$request)) {
             $pbxmanagerController->process($request);
         }else {
             $response = $connector->getXmlResponse();
@@ -47,8 +52,6 @@ class PBXManager_PBXManager_Callbacks {
         }
     }
 }
-
 $pbxmanager = new PBXManager_PBXManager_Callbacks();
-$pbxmanager->process(new Vtiger_Request($_REQUEST));
-
+	    $pbxmanager->process(new Vtiger_Request($_REQUEST));
 ?>

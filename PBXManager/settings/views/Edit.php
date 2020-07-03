@@ -10,22 +10,22 @@
  * *********************************************************************************** */
 Class Settings_PBXManager_Edit_View extends Vtiger_Edit_View {
 
-    function __construct() {
-    $this->exposeMethod('showPopup');
+     function __construct() {
+        $this->exposeMethod('showPopup');
     }
 
     public function process(Vtiger_Request $request) {
-        $this->showPopup($request);
+            $this->showPopup($request);
     }
     
     public function showPopup(Vtiger_Request $request) {
         $id = $request->get('id');
         $qualifiedModuleName = $request->getModule(false);
         $viewer = $this->getViewer($request);
-        if ($id) {
+        if($id){
             $recordModel = Settings_PBXManager_Record_Model::getInstanceById($id, $qualifiedModuleName);
             $gateway = $recordModel->get('gateway');
-        } else {
+        }else{
             $recordModel = Settings_PBXManager_Record_Model::getCleanInstance();
         }
         $viewer->assign('RECORD_ID', $id);

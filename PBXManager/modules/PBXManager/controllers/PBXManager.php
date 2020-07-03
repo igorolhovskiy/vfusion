@@ -21,18 +21,18 @@ class PBXManager_PBXManager_Controller {
      * return Response object
      */
     function process($request) {
-        //$logFusion =& LoggerManager::getLogger('fusion');
-        //PBXFusion begin
-        $request=$this->mapRequestVars($request);
+	//$logFusion =& LoggerManager::getLogger('fusion');
+//PBXFusion begin
+	$request=$this->mapRequestVars($request);
         $mode = $request->get('callstatus');
-        //$logFusion->debug("PBX CONTROLLER PROCESS mode=".$mode);
-        //PBXFusion end
+	//$logFusion->debug("PBX CONTROLLER PROCESS mode=".$mode);
+//PBXFusion end
         switch ($mode) {
-        //PBXFusion begin
-            case "CallStart" :
+	//PBXFusion begin
+    	    case "CallStart" :
                 $this->processCallStart($request);
                 break;
-        //PBXFusion end
+	//PBXFusion end
             case "StartApp" :
                 $this->processStartupCallFusion($request);
                 break;
@@ -68,39 +68,39 @@ class PBXManager_PBXManager_Controller {
     */
 
     function mapRequestVars($request) {
-        $callstatus=$request->get('callstatus');
-        $uuid=$request->get('uuid');
-        $request->set("callUUID",$uuid);
-        $date = new DateTime();
-        $date->setTimestamp($request->get('timestamp'));
-        $request->set("StartTime",$date->format('Y-m-d H:i:s'));
-        if ($request->get('callstate')) {
-            $request->set('callstatus',$request->get('callstate'));
-        }
-        switch ($callstatus) {
-            case "call_start" :
-                $request->set("callstatus",'CallStart');
-                $src=$request->get('src');
-                $request->set("callerIdNumber",$src['number']);
-                $request->set("callerIdName",$src['name']);    
-                break;
-            case "call_ringing" :	    
-                $request->set("callstatus",'StartApp');			
-                break;
-            case "call_answered" :	    
-                $request->set("callstatus",'DialAnswer');			
-                break;
-            case "call_end" :
-                if ($request->get('src')) {
-                    $src=$request->get('src');
-                    $request->set("callerIdNumber",$src['number']);
-                    $request->set("callerIdName",$src['name']);    
-                }	    
-                $request->set("callstatus",'EndCall');			
-                break;
-        }
-        
-        return $request;
+	$callstatus=$request->get('callstatus');
+	$uuid=$request->get('uuid');
+	$request->set("callUUID",$uuid);
+	$date = new DateTime();
+	$date->setTimestamp($request->get('timestamp'));
+	$request->set("StartTime",$date->format('Y-m-d H:i:s'));
+	if ($request->get('callstate')) 
+	    $request->set('callstatus',$request->get('callstate'));
+	switch ($callstatus) {
+	    case "call_start" :
+		$request->set("callstatus",'CallStart');
+		$src=$request->get('src');
+		$request->set("callerIdNumber",$src['number']);
+		$request->set("callerIdName",$src['name']);    
+	    break;
+	    case "call_ringing" :	    
+		$request->set("callstatus",'StartApp');			
+    	    break;
+	    case "call_answered" :	    
+		$request->set("callstatus",'DialAnswer');			
+    	    break;
+	    case "call_end" :
+		if ($request->get('src')) {
+		    $src=$request->get('src');
+		    $request->set("callerIdNumber",$src['number']);
+		    $request->set("callerIdName",$src['name']);    
+		}	    
+		$request->set("callstatus",'EndCall');			
+    	    break;
+
+	}
+	
+	return $request;
     }
 
 
@@ -112,61 +112,60 @@ class PBXManager_PBXManager_Controller {
 
 //FusionPBX begin
     function processCallStart($request) {
-        //$logFusion =& LoggerManager::getLogger('fusion');	
+    //$logFusion =& LoggerManager::getLogger('fusion');	
         $connector = $this->getConnector();
-        $direction = $request->get('direction');
+	$direction = $request->get('direction');
         $callerNumber = $request->get('callerIdNumber');
-        $request->set('callstatus','callstart');
-        $request->set('Direction', $direction);
-    if ($direction == 'inbound' || $direction == 'outbound') {    	    	    
-        if ($direction=='oubound') {
-            $userInfo = PBXManager_Record_Model::getUserInfoWithNumber($callerNumber);
-            if ($request->get('callerIdNumber')) {
-                        $to = $request->get('callerIdNumber');
-                } else if ($request->get('callerIdName')) {
-                        $to = $request->get('callerIdName');
-                } 
-                $request->set('to', $to);
-                $customerInfo = PBXManager_Record_Model::lookUpRelatedWithNumber($to);
-            if ($userInfo) {
-                $connector->handleCallStartFusion($request, $userInfo, $customerInfo);
-            } else {
-                //CRM User is not found 
-                $param['status'] = "404 Not Found";
-                $param['message'] = "CRM User Not Found";	    
-                $connector->respondToIncomingCallStart($param);
-            }
-        } else {
-            //inbound call
-            //$logFusion->debug("PBX PROCESSCALLSTART");
-            $customerInfo = PBXManager_Record_Model::lookUpRelatedWithNumber($request->get('callerIdNumber'));
-            //$logFusion->debug("PBX PROCESSCALLSTART customerInfo_id=".$customerInfo['id']);
-            $request->set('from', $request->get('callerIdNumber'));
-            //CRM User is unknown now 	
-            $userInfo = PBXManager_Record_Model::getUserInfoAdmin();	    
-            $connector->handleCallStartFusion($request, $userInfo, $customerInfo);
-        }	    
-    } else {
-    //local call
-        $request->set('Direction', 'local');
-        //$logFusion->debug("PBX processCallStart Local callerIdNumber=".$request->get('callerIdNumber')." callerNumber=".$callerNumber);	    
-        $customerInfo = PBXManager_Record_Model::lookUpRelatedWithNumberLocal($request->get('callerIdNumber'));
-        $userInfo = PBXManager_Record_Model::getUserInfoWithNumber($callerNumber);
-        if (!$userInfo) {
-            $userInfo = PBXManager_Record_Model::getUserInfoAdmin();	    
-        }
-        $connector->handleCallStartFusion($request, $userInfo, $customerInfo);
-    }
+	$request->set('callstatus','callstart');
+	$request->set('Direction', $direction);
+	if ($direction == 'inbound' || $direction == 'outbound') {    	    	    
+	    if ($direction=='oubound') {
+    		$userInfo = PBXManager_Record_Model::getUserInfoWithNumber($callerNumber);
+		if ($request->get('callerIdNumber')) {
+            	    $to = $request->get('callerIdNumber');
+        	} else if ($request->get('callerIdName')) {
+            	    $to = $request->get('callerIdName');
+        	} 
+        	$request->set('to', $to);
+        	$customerInfo = PBXManager_Record_Model::lookUpRelatedWithNumber($to);
+		if ($userInfo) 
+		    $connector->handleCallStartFusion($request, $userInfo, $customerInfo);
+		else {
+		    //CRM User is not found 
+		    $param['status'] = "404 Not Found";
+		    $param['message'] = "CRM User Not Found";	    
+		    $connector->respondToIncomingCallStart($param);
+		}
+	    } else {
+	    //inbound call
+		//$logFusion->debug("PBX PROCESSCALLSTART");
+        	$customerInfo = PBXManager_Record_Model::lookUpRelatedWithNumber($request->get('callerIdNumber'));
+		//$logFusion->debug("PBX PROCESSCALLSTART customerInfo_id=".$customerInfo['id']);
+        	$request->set('from', $request->get('callerIdNumber'));
+		//CRM User is unknown now 	
+		$userInfo = PBXManager_Record_Model::getUserInfoAdmin();	    
+		$connector->handleCallStartFusion($request, $userInfo, $customerInfo);
+	    }	    
+	} else {
+	//local call
+		$request->set('Direction', 'local');
+		//$logFusion->debug("PBX processCallStart Local callerIdNumber=".$request->get('callerIdNumber')." callerNumber=".$callerNumber);	    
+        	$customerInfo = PBXManager_Record_Model::lookUpRelatedWithNumberLocal($request->get('callerIdNumber'));
+		$userInfo = PBXManager_Record_Model::getUserInfoWithNumber($callerNumber);
+		if (!$userInfo)
+		    $userInfo = PBXManager_Record_Model::getUserInfoAdmin();	    
+		$connector->handleCallStartFusion($request, $userInfo, $customerInfo);
+	}
     }
 //FusionPBX end
 
 
 //FusionPBX begin
     function processStartupCallFusion($request) {
-        //$logFusion =& LoggerManager::getLogger('fusion');
-        //$logFusion->debug("PBX processStartupCallFusion callstatus=".$request->get('callstatus')." uuid=".$request->get('uuid')." CallUUID=".$request->get('callUUID'));
-        $connector = $this->getConnector();
-        $connector->handleStartupCallFusion($request);	
+	//$logFusion =& LoggerManager::getLogger('fusion');
+	//$logFusion->debug("PBX processStartupCallFusion callstatus=".$request->get('callstatus')." uuid=".$request->get('uuid')." CallUUID=".$request->get('callUUID'));
+	$connector = $this->getConnector();
+	$connector->handleStartupCallFusion($request);	
     }
 
 //FusionPBX end
