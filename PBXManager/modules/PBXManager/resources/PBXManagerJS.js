@@ -28,29 +28,27 @@ var Vtiger_PBXManager_Js = {
 	 */
 	requestPBXgetCalls : function() {
 		var url = 'index.php?module=PBXManager&action=IncomingCallPoll&mode=searchIncomingCalls';
-                // Salesplatform.ru begin PBXManager porting
-		app.request.get({url : url}).then(function(err, data){
-                    if (typeof data === 'string') {
-                        location.href = 'index.php';
-                    }
-                    
-                    
+		app.request.get({url : url}).then(function(err, data) {
+
+			if (typeof data === 'string') {
+				location.href = 'index.php';
+			}
 			if(!err) {
 				for(var i = 0; i < data.length; i++) {
 					var record = data[i];
 					var wndflag = record.flag;
-                                        //app.request.get(url).then(function(data){
-                                        //if(data.success && data.result) {
-                                        //        for(i=0; i< data.result.length; i++) {
-                                        //                var record = data.result[i];
-                                        //SalesPlatform.ru end PBXManager porting
+					//app.request.get(url).then(function(data){
+					//if(data.success && data.result) {
+					//        for(i=0; i< data.result.length; i++) {
+					//                var record = data.result[i];
+					//SalesPlatform.ru end PBXManager porting
 					if(jQuery('#pbxcall_'+record.pbxmanagerid+'').size()== 0 && wndflag != 'close' ) {
-                                            Vtiger_PBXManager_Js.showPBXIncomingCallPopup(record);
-                                        } else {
-                                            Vtiger_PBXManager_Js.updatePBXIncomingCallPopup(record);
+                        Vtiger_PBXManager_Js.showPBXIncomingCallPopup(record);
+                    } else {
+                        Vtiger_PBXManager_Js.updatePBXIncomingCallPopup(record);
 					}
 				}
-                        }
+            }
 		});
 		Vtiger_PBXManager_Js.removeCompletedCallPopup();
 	},
@@ -65,7 +63,7 @@ var Vtiger_PBXManager_Js = {
 		var options = {
 			icon: 'fa fa-check-circle',
 			title: app.vtranslate('JS_PBX_INCOMING_CALL'),
-		message: '<div class="row-fluid pbxcall" id="pbxcall_'+record.pbxmanagerid+'" callid='+record.pbxmanagerid+' style="color:blue">' + 
+			message: '<div class="row-fluid pbxcall" id="pbxcall_'+record.pbxmanagerid+'" callid='+record.pbxmanagerid+' style="color:blue">' + 
                     '<span class="span12" id="caller" value="'+record.customernumber+'">'+app.vtranslate('JS_PBX_CALL_FROM')+' : '+record.customernumber+'</span><span class="span12 ' + contactFieldStyle + '" id="contactsave_'+record.pbxmanagerid+'">\n\
                    <span><input class="span3" id="lastname_'+record.pbxmanagerid+'" type="text" placeholder="' + app.vtranslate('Enter Last Name') + '"></input>&nbsp;&nbsp;&nbsp;<select class="input-medium" id="module_'+record.pbxmanagerid+'"><option data-color="blue" style="background-color: gray" value="Select" selected>' + app.vtranslate('Select') + '</option></select><h5 class="alert-danger hide span3" id="alert_msg">'+app.vtranslate('JS_PBX_FILL_ALL_FIELDS')+'</h5>\n\
                    <button class="btn btn-success pull-right"  id="pbxcontactsave_'+record.pbxmanagerid+'" recordid="'+record.pbxmanagerid+'" type="submit">' + app.vtranslate('Save') + '</button>\n\
@@ -74,7 +72,7 @@ var Vtiger_PBXManager_Js = {
                     <button class="btn btn-success pull-left"  id="pbxcontactclose_'+record.pbxmanagerid+'" recordid="'+record.pbxmanagerid+'" type="submit">' + app.vtranslate('Close') + '</button>\n\
 		    </span></span><br/><span class="span12" style="display:none" id="owner"> &nbsp;:&nbsp;<span id="ownername"></span></span></div>',                
 	
-                };
+            };
         
     		var settings = {
 		'template' : '<div data-notify="container" class="col-xs-11 col-sm-3 vt-notification vt-notification-{0}" role="alert">' +
@@ -88,22 +86,22 @@ var Vtiger_PBXManager_Js = {
                                     '</div>' +
                                     '<a href="{3}" target="{4}" data-notify="url"></a>' +
                                 '</div>',
-        	delay: 0,
-		    placement: {
-			from: "bottom",
-			align: "right"
-		    },
-		    offset: 20
-            	};
+				delay: 0,
+				placement: {
+					from: "bottom",
+					align: "right"
+				},
+				offset: 20
+            };
     		jQuery.notify(options,settings);
 
 
                     
 		//To remove the popup for all users except answeredby (existing record)
 		if(record.user) {
-                    if(record.user != record.current_user_id) {
-                            Vtiger_PBXManager_Js.removeCallPopup(record.pbxmanagerid);
-                    }
+			if(record.user != record.current_user_id) {
+				Vtiger_PBXManager_Js.removeCallPopup(record.pbxmanagerid);
+			}
 		}
 
 		// To check if it is new or existing contact
@@ -145,7 +143,7 @@ var Vtiger_PBXManager_Js = {
 		var flag = 'close';	
 		var url = 'index.php?module=PBXManager&action=IncomingCallPoll&mode=closeRecordPopup&pbxmanagerid='+record.pbxmanagerid+'&flag='+flag+'&callid='+record.sourceuuid;
 		// Salesplatform.ru begin PBXManager porting
-                app.request.get({'url': url}).then(function(err, data){
+        app.request.get({'url': url}).then(function(err, data){
 			if(!err) {
                 //app.request.get(url).then(function(data){
                 //      if(data.success && data.result) {
@@ -170,7 +168,7 @@ var Vtiger_PBXManager_Js = {
 		}
 		var url = 'index.php?module=PBXManager&action=IncomingCallPoll&mode=createRecord&number='+encodeURIComponent(number)+'&lastname='+encodeURIComponent(lastname)+'&callid='+record.sourceuuid+'&modulename='+moduleName;
 		// Salesplatform.ru begin PBXManager porting
-                app.request.get({'url': url}).then(function(err, data){
+        app.request.get({'url': url}).then(function(err, data){
 			if(!err) {
                 //app.request.get(url).then(function(data){
                 //      if(data.success && data.result) {
@@ -206,28 +204,24 @@ var Vtiger_PBXManager_Js = {
                                                         // Salesplatform.ru begin PBXManager porting
 							//if(data && showSaveOption && record.direction !='local') {
 							    if( data && showSaveOption && direction != 'local' ) {
-                                                            // if(responsedata.success && showSaveOption)
-                                                            //SalesPlatform.ru end PBXManager porting 
-                                                    		jQuery('#contactsave_'+record.pbxmanagerid+'').show();
-                                                        // Salesplatform.ru begin PBXManager porting
-                                                	    } else {
-								jQuery('#contactsave_'+record.pbxmanagerid+'').hide();
+									jQuery('#contactsave_'+record.pbxmanagerid+'').show();
+                                } else {
+									jQuery('#contactsave_'+record.pbxmanagerid+'').hide();
 							    }
-                                                    //SalesPlatform.ru end PBXManager porting 
 						});
-						break;
+				break;
 			default:	
 			    if (direction == 'local') {
-				jQuery('#caller','#pbxcall_'+record.pbxmanagerid+'').html(app.vtranslate('JS_PBX_CALL_FROM')+'&nbsp;'+record.callername);
-				jQuery('#contactsave_'+record.pbxmanagerid+'').hide();
+					jQuery('#caller','#pbxcall_'+record.pbxmanagerid+'').html(app.vtranslate('JS_PBX_CALL_FROM')+'&nbsp;'+record.callername);
+					jQuery('#contactsave_'+record.pbxmanagerid+'').hide();
 			    } else {
-				jQuery('#caller','#pbxcall_'+record.pbxmanagerid+'').html(app.vtranslate('JS_PBX_CALL_FROM')+' :&nbsp;<a href="index.php?module='+record.customertype+'&view=Detail&record='+record.customer+'">'+record.callername+'</a>');
+					jQuery('#caller','#pbxcall_'+record.pbxmanagerid+'').html(app.vtranslate('JS_PBX_CALL_FROM')+' :&nbsp;<a href="index.php?module='+record.customertype+'&view=Detail&record='+record.customer+'">'+record.callername+'</a>');
 			    }
 			    // SalesPlatform.ru begin
                         //jQuery('#ownername','#pbxcall_'+record.pbxmanagerid+'').text(record.ownername);
                         //jQuery('#owner','#pbxcall_'+record.pbxmanagerid+'').show();
                         // SalesPlatform.ru end
-                        break;
+                break;
 		}
 	},
 
@@ -298,10 +292,10 @@ var Vtiger_PBXManager_Js = {
 	 * To get contents holder based on the view
 	 */
 	getContentHolder:function(view){
-		if(view == 'List')
+		if(view == 'List') {
 			return jQuery('.listViewContentDiv');
-		else
-			return jQuery('.detailViewContainer');
+		}
+		return jQuery('.detailViewContainer');
 	},
 
 	 /**
@@ -309,57 +303,45 @@ var Vtiger_PBXManager_Js = {
 	 */
 	makeOutboundCall : function(number, record){
 		var params = {
-                    // Salesplatform.ru begin PBXManager porting
-                    data: {
-                    // Salesplatform.ru end PBXManager porting    
-                        number : number,
-			record : record,
-			module : 'PBXManager',
-			action : 'OutgoingCall',
-                    // Salesplatform.ru begin PBXManager porting
-                    }
-                    // Salesplatform.ru end PBXManager porting
-
-                        
+			data: {
+				number : number,
+				record : record,
+				module : 'PBXManager',
+				action : 'OutgoingCall',
+			}      
 		}
                 // Salesplatform.ru begin PBXManager porting
 		app.request.get(params).then(function(err, data){
-                    if(!err){
-                    //app.request.get(params).then(function(data){
-                    //if(data.result){                            
-                    // Salesplatform.ru end PBXManager porting  
-                        params = {
-                            text : app.vtranslate('JS_PBX_OUTGOING_SUCCESS'),
-                            type : 'info'
-                        }
-                    }else{
-                        params = {
-                            text : app.vtranslate('JS_PBX_OUTGOING_FAILURE'),
-                            type : 'error'
-                        }
-                    }
-                    // Salesplatform.ru begin PBXManager porting
-                    Vtiger_PBXManager_Js.showPnotify(params);
-                    //Vtiger_Helper_Js.showPnotify(params);
-                    // Salesplatform.ru end PBXManager porting  
+			if (!err) {
+				params = {
+					text : app.vtranslate('JS_PBX_OUTGOING_SUCCESS'),
+					type : 'info'
+				}
+			} else {
+				params = {
+					text : app.vtranslate('JS_PBX_OUTGOING_FAILURE'),
+					type : 'error'
+				}
+			}
+			Vtiger_PBXManager_Js.showPnotify(params);
 		});
 	},
 
 	 /**
 		* Function to register required events
 		*/
-	 registerEvents : function(){
+	 registerEvents : function() {
 		var thisInstance = this;
 		//for polling
 		var url = 'index.php?module=PBXManager&action=IncomingCallPoll&mode=checkPermissionForPolling';
                 
                 // Salesplatform.ru begin PBXManager porting
 		app.request.get({url : url}).then(function(err, data){
-			if(!err) {
-                            Vtiger_PBXManager_Js.registerPBXCall();
-                            Visibility.every(2000, function () {
-                                Vtiger_PBXManager_Js.registerPBXCall();
-                            });
+			if (!err) {
+				Vtiger_PBXManager_Js.registerPBXCall();
+				Visibility.every(2000, function () {
+					Vtiger_PBXManager_Js.registerPBXCall();
+				});
                 //app.request.get(url).then(function(data){
                 //      if(data && data.result) {
                 //Vtiger_PBXManager_Js.registerPBXCall();
