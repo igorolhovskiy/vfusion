@@ -57,25 +57,24 @@ var Vtiger_PBXManager_Js = {
 	 * Function display the PBX popup
 	 */
 	showPBXIncomingCallPopup : function(record) {
-            // Salesplatform.ru begin PBXManager porting
 		var contactFieldStyle = ((record.customer != null && record.customer != '') ? '' : '');
 
 		var options = {
 			icon: 'fa fa-check-circle',
 			title: app.vtranslate('JS_PBX_INCOMING_CALL'),
-			message: '<div class="row-fluid pbxcall" id="pbxcall_'+record.pbxmanagerid+'" callid='+record.pbxmanagerid+' style="color:blue">' + 
+			message: '<div class="row-fluid pbxcall" id="pbxcall_'+record.pbxmanagerid+'" callid='+record.pbxmanagerid+' style="color:white">' + 
                     '<span class="span12" id="caller" value="'+record.customernumber+'">'+app.vtranslate('JS_PBX_CALL_FROM')+' : '+record.customernumber+'</span><span class="span12 ' + contactFieldStyle + '" id="contactsave_'+record.pbxmanagerid+'">\n\
-                   <span><input class="span3" id="lastname_'+record.pbxmanagerid+'" type="text" placeholder="' + app.vtranslate('Enter Last Name') + '"></input>&nbsp;&nbsp;&nbsp;<select class="input-medium" id="module_'+record.pbxmanagerid+'"><option data-color="blue" style="background-color: gray" value="Select" selected>' + app.vtranslate('Select') + '</option></select><h5 class="alert-danger hide span3" id="alert_msg">'+app.vtranslate('JS_PBX_FILL_ALL_FIELDS')+'</h5>\n\
+                   <span><input class="span3" id="lastname_'+record.pbxmanagerid+'" type="text" style="color:black" placeholder="' + app.vtranslate('Enter Last Name') + '"></input>&nbsp;&nbsp;&nbsp;<select class="input-medium" style="color:black" id="module_'+record.pbxmanagerid+'"><option value="Select" selected>' + app.vtranslate('Select') + '</option></select><h5 class="alert-danger hide span3" id="alert_msg">'+app.vtranslate('JS_PBX_FILL_ALL_FIELDS')+'</h5>\n\
                    <button class="btn btn-success pull-right"  id="pbxcontactsave_'+record.pbxmanagerid+'" recordid="'+record.pbxmanagerid+'" type="submit">' + app.vtranslate('Save') + '</button>\n\
                    </span></span><br/> <span class="span12 ' + contactFieldStyle + '" id="contactclose_'+record.pbxmanagerid+'">\n\
-        	    <span><h5 class="alert-danger hide span3" id="alert_msg">'+app.vtranslate('JS_PBX_FILL_ALL_FIELDS')+'</h5>\n\
+        	    	<span><h5 class="alert-danger hide span3" id="alert_msg">'+app.vtranslate('JS_PBX_FILL_ALL_FIELDS')+'</h5>\n\
                     <button class="btn btn-success pull-left"  id="pbxcontactclose_'+record.pbxmanagerid+'" recordid="'+record.pbxmanagerid+'" type="submit">' + app.vtranslate('Close') + '</button>\n\
-		    </span></span><br/><span class="span12" style="display:none" id="owner"> &nbsp;:&nbsp;<span id="ownername"></span></span></div>',                
+		    	</span></span><br/><span class="span12" style="display:none" id="owner"> &nbsp;:&nbsp;<span id="ownername"></span></span></div>',                
 	
             };
         
     		var settings = {
-		'template' : '<div data-notify="container" class="col-xs-11 col-sm-3 vt-notification vt-notification-{0}" role="alert">' +
+				'template' : '<div data-notify="container" class="col-xs-11 col-sm-3 vt-notification vt-notification-{0}" role="alert">' +
                                     '<div class="notificationHeader">'+
                                         '<span data-notify="icon"></span> ' +
                                         '<span data-notify="title">{1}</span> ' +
