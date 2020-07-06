@@ -192,31 +192,31 @@ var Vtiger_PBXManager_Js = {
 		switch(record.callername){
 			case null:	
 			    var url = 'index.php?module=PBXManager&action=IncomingCallPoll&mode=checkModuleViewPermission&view=EditView';
-                            app.request.get({'url': url}).then(function(err, data){
-                            //app.request.get(url).then(function(data){
-                            //var responsedata = JSON.parse(data);
-                            //SalesPlatform.ru end PBXManager porting   
-							var showSaveOption = false;
-							var moduleList = data.modules;
-							var contents = jQuery('#module_' + record.pbxmanagerid);
-							var newEle;														for(var module in moduleList){
-								if(moduleList.hasOwnProperty(module)) {
-									if(moduleList[module]){
-									   newEle = '<option id="select_'+module+'" value="'+module+'">'+app.vtranslate(module)+'</option>'; 
-									   contents.append(newEle);
-									   showSaveOption = true;
-									}
-								}
+				app.request.get({'url': url}).then(function(err, data){
+					//app.request.get(url).then(function(data){
+					//var responsedata = JSON.parse(data);
+					//SalesPlatform.ru end PBXManager porting   
+					var showSaveOption = false;
+					var moduleList = data.modules;
+					var contents = jQuery('#module_' + record.pbxmanagerid);
+					var newEle;														for(var module in moduleList){
+						if(moduleList.hasOwnProperty(module)) {
+							if(moduleList[module]){
+								newEle = '<option id="select_'+module+'" value="'+module+'">'+app.vtranslate(module)+'</option>'; 
+								contents.append(newEle);
+								showSaveOption = true;
 							}
-							//if(data && showSaveOption && record.direction !='local') {
-							if( data && showSaveOption && direction != 'local' ) {
-								jQuery('#contactsave_' + record.pbxmanagerid).removeClass('hidden').show();
-								jQuery('#pbxcontactsave_' + record.pbxmanagerid).removeClass('hidden').show();
-							} else {
-								jQuery('#contactsave_' + record.pbxmanagerid).hide();
-								jQuery('#pbxcontactsave_' + record.pbxmanagerid).hide();
-							}
-						});
+						}
+					}
+					//if(data && showSaveOption && record.direction !='local') {
+					if( data && showSaveOption && direction != 'local' ) {
+						jQuery('#contactsave_' + record.pbxmanagerid).removeClass('hidden').show();
+						jQuery('#pbxcontactsave_' + record.pbxmanagerid).removeClass('hidden').show();
+					} else {
+						jQuery('#contactsave_' + record.pbxmanagerid).hide();
+						jQuery('#pbxcontactsave_' + record.pbxmanagerid).hide();
+					}
+				});
 				break;
 			default:	
 			    if (direction == 'local') {
