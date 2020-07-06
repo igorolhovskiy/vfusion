@@ -64,16 +64,17 @@ var Vtiger_PBXManager_Js = {
 			title: app.vtranslate('JS_PBX_INCOMING_CALL'),
 			message: `<div class="row-fluid pbxcall" id="pbxcall_${record.pbxmanagerid}" callid=${record.pbxmanagerid} style="color:white">
                 <span class="col-sm-12" id="caller" value="${record.customernumber}">${app.vtranslate('JS_PBX_CALL_FROM')} : ${record.customernumber}</span>
-                <span class="col-sm-12 ${contactFieldStyle}" id="contactsave_${record.pbxmanagerid}">
-                <input class="col-sm-7" id="lastname_${record.pbxmanagerid}" type="text" style="color:black" placeholder="${app.vtranslate('Enter Last Name')}"></input>
-                <select class="input-medium col-sm-3 col-sm-offset-2" style="color:black" id="module_${record.pbxmanagerid}">
+                <span class="col-sm-12 ${contactFieldStyle} hidden" id="contactsave_${record.pbxmanagerid}">
+                <input class="col-sm-8" id="lastname_${record.pbxmanagerid}" type="text" style="color:black" placeholder="${app.vtranslate('Enter Last Name')}"></input>
+                <select class="input-medium col-sm-3 col-sm-offset-1" style="color:black" id="module_${record.pbxmanagerid}">
                 <option value="Select" selected>${app.vtranslate('Select')}</option>
                 </select>
                 </span>
                 <br/>
                 <span class="col-sm-12 ${contactFieldStyle}" id="contactclose_${record.pbxmanagerid}">\n\
                 <span>
-                <button class="btn btn-success pull-right" id="pbxcontactsave_${record.pbxmanagerid}" recordid="${record.pbxmanagerid}" type="submit">${app.vtranslate('Save')}</button>
+                <br/>
+                <button class="btn btn-success pull-right hidden" id="pbxcontactsave_${record.pbxmanagerid}" recordid="${record.pbxmanagerid}" type="submit">${app.vtranslate('Save')}</button>
                 <button class="btn btn-warning pull-left" id="pbxcontactclose_${record.pbxmanagerid}" recordid="${record.pbxmanagerid}" type="submit">${app.vtranslate('Close')}</button>
                 </span>
                 </span>
@@ -118,8 +119,8 @@ var Vtiger_PBXManager_Js = {
 		Vtiger_PBXManager_Js.checkIfRelatedModuleRecordExist(record);
 
 		if(record.answeredby!=null){
-			jQuery('#answeredbyname','#pbxcall_'+record.pbxmanagerid+'').text(record.answeredby);
-			jQuery('#answeredby','#pbxcall_'+record.pbxmanagerid+'').show();
+			jQuery('#answeredbyname','#pbxcall_' + record.pbxmanagerid).text(record.answeredby);
+			jQuery('#answeredby','#pbxcall_' + record.pbxmanagerid).show();
 		}
 
 		jQuery('#pbxcontactsave_'+record.pbxmanagerid+'').bind('click', function(e) {
@@ -136,14 +137,14 @@ var Vtiger_PBXManager_Js = {
 
 			Vtiger_PBXManager_Js.createRecord(e, record);
 			//To restrict the save button action to one click
-			jQuery('#pbxcontactsave_'+record.pbxmanagerid+'').unbind('click');
+			jQuery('#pbxcontactsave_' + record.pbxmanagerid).unbind('click');
 		});
 		
-		jQuery('#pbxcontactclose_'+record.pbxmanagerid+'').bind('click', function(e) {
+		jQuery('#pbxcontactclose_' + record.pbxmanagerid).bind('click', function(e) {
 			var pbxmanagerid = jQuery(e.currentTarget).attr('recordid');
 			Vtiger_PBXManager_Js.closeRecordPopup(e, record);
 			//To restrict the save button action to one click
-			jQuery('#pbxcontactclose_'+record.pbxmanagerid+'').unbind('click');
+			jQuery('#pbxcontactclose_' + record.pbxmanagerid).unbind('click');
 		});
 
 	},
@@ -155,10 +156,7 @@ var Vtiger_PBXManager_Js = {
 		// Salesplatform.ru begin PBXManager porting
         app.request.get({'url': url}).then(function(err, data){
 			if(!err) {
-                //app.request.get(url).then(function(data){
-                //      if(data.success && data.result) {
-                //SalesPlatform.ru end PBXManager porting
-				jQuery('#contactclose_'+pbxmanagerid+'').hide();
+				jQuery('#contactclose_' + pbxmanagerid).hide();
 			}
 		 });
 	},
@@ -167,9 +165,9 @@ var Vtiger_PBXManager_Js = {
 
 	createRecord: function(e, record) {
 		var pbxmanagerid = jQuery(e.currentTarget).attr('recordid');
-		var lastname = jQuery('#lastname_'+pbxmanagerid+'').val();
-		var moduleName = jQuery('#module_'+pbxmanagerid+'').val();				
-		var number = jQuery('#caller','#pbxcall_'+pbxmanagerid+'').attr("value");
+		var lastname = jQuery('#lastname_' + pbxmanagerid).val();
+		var moduleName = jQuery('#module_' + pbxmanagerid).val();				
+		var number = jQuery('#caller','#pbxcall_' + pbxmanagerid).attr("value");
 		if (lastname == '') {
 		    lastname = number;
 		}    
@@ -183,7 +181,8 @@ var Vtiger_PBXManager_Js = {
                 //app.request.get(url).then(function(data){
                 //      if(data.success && data.result) {
                 //SalesPlatform.ru end PBXManager porting
-				jQuery('#contactsave_'+pbxmanagerid+'').hide();
+				jQuery('#contactsave_' + pbxmanagerid).hide();
+				jQuery('#pbxcontactsave_' + pbxmanagerid).hide();
 			}
 		 });
 	},
@@ -193,15 +192,13 @@ var Vtiger_PBXManager_Js = {
 		switch(record.callername){
 			case null:	
 			    var url = 'index.php?module=PBXManager&action=IncomingCallPoll&mode=checkModuleViewPermission&view=EditView';
-                            // Salesplatform.ru begin PBXManager porting
                             app.request.get({'url': url}).then(function(err, data){
                             //app.request.get(url).then(function(data){
                             //var responsedata = JSON.parse(data);
                             //SalesPlatform.ru end PBXManager porting   
 							var showSaveOption = false;
-                                                        // Salesplatform.ru begin PBXManager porting
 							var moduleList = data.modules;
-							var contents = jQuery('#module_'+record.pbxmanagerid+'');
+							var contents = jQuery('#module_' + record.pbxmanagerid);
 							var newEle;														for(var module in moduleList){
 								if(moduleList.hasOwnProperty(module)) {
 									if(moduleList[module]){
@@ -211,21 +208,23 @@ var Vtiger_PBXManager_Js = {
 									}
 								}
 							}
-                                                        // Salesplatform.ru begin PBXManager porting
 							//if(data && showSaveOption && record.direction !='local') {
-							    if( data && showSaveOption && direction != 'local' ) {
-									jQuery('#contactsave_'+record.pbxmanagerid+'').show();
-                                } else {
-									jQuery('#contactsave_'+record.pbxmanagerid+'').hide();
-							    }
+							if( data && showSaveOption && direction != 'local' ) {
+								jQuery('#contactsave_' + record.pbxmanagerid).removeClass('hidden').show();
+								jQuery('#pbxcontactsave_' + record.pbxmanagerid).removeClass('hidden').show();
+							} else {
+								jQuery('#contactsave_' + record.pbxmanagerid).hide();
+								jQuery('#pbxcontactsave_' + record.pbxmanagerid).hide();
+							}
 						});
 				break;
 			default:	
 			    if (direction == 'local') {
-					jQuery('#caller','#pbxcall_'+record.pbxmanagerid+'').html(app.vtranslate('JS_PBX_CALL_FROM')+'&nbsp;'+record.callername);
-					jQuery('#contactsave_'+record.pbxmanagerid+'').hide();
+					jQuery('#caller','#pbxcall_' + record.pbxmanagerid).html(app.vtranslate('JS_PBX_CALL_FROM')+'&nbsp;'+record.callername);
+					jQuery('#contactsave_' + record.pbxmanagerid).hide();
+					jQuery('#pbxcontactsave_' + record.pbxmanagerid).hide();
 			    } else {
-					jQuery('#caller','#pbxcall_'+record.pbxmanagerid+'').html(app.vtranslate('JS_PBX_CALL_FROM')+' :&nbsp;<a href="index.php?module='+record.customertype+'&view=Detail&record='+record.customer+'">'+record.callername+'</a>');
+					jQuery('#caller','#pbxcall_' + record.pbxmanagerid).html(app.vtranslate('JS_PBX_CALL_FROM')+' :&nbsp;<a href="index.php?module='+record.customertype+'&view=Detail&record='+record.customer+'">'+record.callername+'</a>');
 			    }
 			    // SalesPlatform.ru begin
                         //jQuery('#ownername','#pbxcall_'+record.pbxmanagerid+'').text(record.ownername);
@@ -244,8 +243,9 @@ var Vtiger_PBXManager_Js = {
 			jQuery('#answeredby','#pbxcall_'+record.pbxmanagerid+'').show();
 		}
 		if(record.customer!=null && record.customer!=''){
-			jQuery('#caller','#pbxcall_'+record.pbxmanagerid+'').html(app.vtranslate('JS_PBX_CALL_FROM')+' :&nbsp;<a href="index.php?module='+record.customertype+'&view=Detail&record='+record.customer+'">'+record.callername+'</a>');
-			jQuery('#contactsave_'+record.pbxmanagerid+'').hide();
+			jQuery('#caller','#pbxcall_' + record.pbxmanagerid).html(app.vtranslate('JS_PBX_CALL_FROM')+' :&nbsp;<a href="index.php?module='+record.customertype+'&view=Detail&record='+record.customer+'">'+record.callername+'</a>');
+			jQuery('#contactsave_' + record.pbxmanagerid).hide();
+			jQuery('#pbxcontactsave_' + record.pbxmanagerid).hide();
 		}
 		//To remove the popup for all users except answeredby (new record)
 		if(record.user) {
@@ -264,25 +264,22 @@ var Vtiger_PBXManager_Js = {
 		for(var i=0; i<pbxcall.length;i++){
 			callid = pbxcall[i].getAttribute('callid');
 			var url = 'index.php?module=PBXManager&action=IncomingCallPoll&mode=getCallStatus&callid='+encodeURIComponent(callid)+'';
-                        // Salesplatform.ru begin PBXManager porting
-			//app.request.get(url).then(function(data){
-                        //if(data.result){
-                        app.request.get({url : url}).then(function(err, data){
-                            if(data && data.callstatus !='in-progress' && data.callstatus !='ringing' ){	
-                        //SalesPlatform.ru end PBXManager porting 
-				if (data.callstatus == 'completed' && data.flag == 'close' ) {
-				    Vtiger_PBXManager_Js.removeCallPopup(callid);
-				} else if (data.callstatus != 'completed') {
-                            	    Vtiger_PBXManager_Js.removeCallPopup(callid);	
-				} else if ( data.callstatus == 'completed' && data.customer != '') {
-				    Vtiger_PBXManager_Js.removeCallPopup(callid);
-				} else if ( data.callstatus == 'completed' && data.customer == '' && data.direction == 'local' ) {
-				    Vtiger_PBXManager_Js.removeCallPopup(callid);
-				} 
-                            } else if (data && data.flag == 'close' ) {
-				Vtiger_PBXManager_Js.removeCallPopup(callid);
-			    }
-			    
+
+            app.request.get({url : url}).then(function(err, data){
+				if(data && data.callstatus !='in-progress' && data.callstatus !='ringing' ){	
+							//SalesPlatform.ru end PBXManager porting 
+					if (data.callstatus == 'completed' && data.flag == 'close' ) {
+						Vtiger_PBXManager_Js.removeCallPopup(callid);
+					} else if (data.callstatus != 'completed') {
+										Vtiger_PBXManager_Js.removeCallPopup(callid);	
+					} else if ( data.callstatus == 'completed' && data.customer != '') {
+						Vtiger_PBXManager_Js.removeCallPopup(callid);
+					} else if ( data.callstatus == 'completed' && data.customer == '' && data.direction == 'local' ) {
+						Vtiger_PBXManager_Js.removeCallPopup(callid);
+					} 
+				} else if (data && data.flag == 'close' ) {
+					Vtiger_PBXManager_Js.removeCallPopup(callid);
+				}
 			});
 		}
 	},
@@ -352,11 +349,6 @@ var Vtiger_PBXManager_Js = {
 				Visibility.every(2000, function () {
 					Vtiger_PBXManager_Js.registerPBXCall();
 				});
-                //app.request.get(url).then(function(data){
-                //      if(data && data.result) {
-                //Vtiger_PBXManager_Js.registerPBXCall();
-                //setInterval("Vtiger_PBXManager_Js.registerPBXCall()", 3000);
-                //SalesPlatform.ru end PBXManager porting
 			}
 		});
 	}
