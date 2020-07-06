@@ -62,29 +62,40 @@ var Vtiger_PBXManager_Js = {
 		var options = {
 			icon: 'fa fa-check-circle',
 			title: app.vtranslate('JS_PBX_INCOMING_CALL'),
-			message: '<div class="row-fluid pbxcall" id="pbxcall_'+record.pbxmanagerid+'" callid='+record.pbxmanagerid+' style="color:white">' + 
-                    '<span class="span12" id="caller" value="'+record.customernumber+'">'+app.vtranslate('JS_PBX_CALL_FROM')+' : '+record.customernumber+'</span><span class="span12 ' + contactFieldStyle + '" id="contactsave_'+record.pbxmanagerid+'">\n\
-                   <span><input class="span3" id="lastname_'+record.pbxmanagerid+'" type="text" style="color:black" placeholder="' + app.vtranslate('Enter Last Name') + '"></input>&nbsp;&nbsp;&nbsp;<select class="input-medium" style="color:black" id="module_'+record.pbxmanagerid+'"><option value="Select" selected>' + app.vtranslate('Select') + '</option></select><h5 class="alert-danger hide span3" id="alert_msg">'+app.vtranslate('JS_PBX_FILL_ALL_FIELDS')+'</h5>\n\
-                   <button class="btn btn-success pull-right"  id="pbxcontactsave_'+record.pbxmanagerid+'" recordid="'+record.pbxmanagerid+'" type="submit">' + app.vtranslate('Save') + '</button>\n\
-                   </span></span><br/> <span class="span12 ' + contactFieldStyle + '" id="contactclose_'+record.pbxmanagerid+'">\n\
-        	    	<span><h5 class="alert-danger hide span3" id="alert_msg">'+app.vtranslate('JS_PBX_FILL_ALL_FIELDS')+'</h5>\n\
-                    <button class="btn btn-success pull-left"  id="pbxcontactclose_'+record.pbxmanagerid+'" recordid="'+record.pbxmanagerid+'" type="submit">' + app.vtranslate('Close') + '</button>\n\
-		    	</span></span><br/><span class="span12" style="display:none" id="owner"> &nbsp;:&nbsp;<span id="ownername"></span></span></div>',                
-	
+			message: `<div class="row-fluid pbxcall" id="pbxcall_${record.pbxmanagerid}" callid=${record.pbxmanagerid} style="color:white">
+                <span class="col-sm-12" id="caller" value="${record.customernumber}">${app.vtranslate('JS_PBX_CALL_FROM')} : ${record.customernumber}</span>
+                <span class="col-sm-12 ${contactFieldStyle}" id="contactsave_${record.pbxmanagerid}">
+                <input class="col-sm-7" id="lastname_${record.pbxmanagerid}" type="text" style="color:black" placeholder="${app.vtranslate('Enter Last Name')}"></input>
+                <select class="input-medium col-sm-3 col-sm-offset-2" style="color:black" id="module_${record.pbxmanagerid}">
+                <option value="Select" selected>${app.vtranslate('Select')}</option>
+                </select>
+                </span>
+                <br/>
+                <span class="col-sm-12 ${contactFieldStyle}" id="contactclose_${record.pbxmanagerid}">\n\
+                <span>
+                <button class="btn btn-success pull-right" id="pbxcontactsave_${record.pbxmanagerid}" recordid="${record.pbxmanagerid}" type="submit">${app.vtranslate('Save')}</button>
+                <button class="btn btn-warning pull-left" id="pbxcontactclose_${record.pbxmanagerid}" recordid="${record.pbxmanagerid}" type="submit">${app.vtranslate('Close')}</button>
+                </span>
+                </span>
+                <br/>
+                <span class="col-sm-12" style="display:none" id="owner"> &nbsp;:&nbsp;
+                <span id="ownername"></span>
+                </span>
+                </div>`,
             };
         
     		var settings = {
-				'template' : '<div data-notify="container" class="col-xs-11 col-sm-3 vt-notification vt-notification-{0}" role="alert">' +
-                                    '<div class="notificationHeader">'+
-                                        '<span data-notify="icon"></span> ' +
-                                        '<span data-notify="title">{1}</span> ' +
-                                    '</div>'+
-                                    '<div data-notify="message">{2}</div>' +
-                                    '<div class="progress" data-notify="progressbar">' +
-                                        '<div class="progress-bar progress-bar-{0}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>' +
-                                    '</div>' +
-                                    '<a href="{3}" target="{4}" data-notify="url"></a>' +
-                                '</div>',
+				template: 	`<div data-notify="container" class="col-xs-11 col-sm-3 vt-notification vt-notification-{0}" role="alert">
+                        	<div class="notificationHeader">
+                            <span data-notify="icon"></span>
+                            <span data-notify="title">{1}</span>
+                            </div>
+                            <div data-notify="message">{2}</div>
+                            <div class="progress" data-notify="progressbar">
+                            <div class="progress-bar progress-bar-{0}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>
+                            </div>
+                            <a href="{3}" target="{4}" data-notify="url"></a>
+                            </div>`,
 				delay: 0,
 				placement: {
 					from: "bottom",
@@ -92,7 +103,7 @@ var Vtiger_PBXManager_Js = {
 				},
 				offset: 20
             };
-    		jQuery.notify(options,settings);
+    		jQuery.notify(options, settings);
 
 
                     
